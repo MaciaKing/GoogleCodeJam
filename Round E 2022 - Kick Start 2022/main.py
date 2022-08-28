@@ -1,4 +1,3 @@
-from itertools import count
 import numpy as np
 
 class Game:
@@ -28,7 +27,22 @@ class Game:
                 if self.N[idx-1]=='V':
                     return True
         return False
-    
+
+    def showWinner(self):
+        countB=0
+        countJ=0
+        for i in self.N:
+            if i=='B':
+                countB=countB+1
+            elif i=='J':
+                countJ=countJ+1
+        if countB>countJ:
+            print(" ****** The Winner is B")
+        elif countJ>countB:
+            print(" ****** The Winner is J")
+        else:
+            print(" ****** There is no winner")
+
 
 #Algotime min max.
 class Player:
@@ -38,20 +52,29 @@ class Player:
         self.label=label
         print("I'm ",name)
 
-    def makeMovement(self):
-        idx=-1
-        for i in self.game.N:
-            idx=idx+1
-            if i=='V':
+    #Simple movement
+    def makeMovement1(self):
+        idx=0
+        con=True
+        while idx<len(self.game.N) and con:
+            if self.game.N[idx]=='V':
                 if self.game.canPutValue(idx):
                     game.setNewN(idx, self.label)
-        print("Final State: ",self.game.N)
+                    con=False
+            idx=idx+1
+
+    #Min Max Algortihm
+    def makeMovement2(self):
+        None
+
     
 
 if __name__ == "__main__":
-    game=Game(11)
+    game=Game(10)
     player1=Player("BOT",game,'B')
     player2=Player("Macia",game,'J')
-    player1.makeMovement()
-    player2.makeMovement()
-    #print(game.isInN(10))
+    for i in range(int(len(game.N)/2)):
+     player1.makeMovement1()
+     player2.makeMovement1()
+    game.showWinner()
+    print("Final State: ", game.N)
